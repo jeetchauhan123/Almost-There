@@ -1,0 +1,264 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>No. You Won’t.</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;800&display=swap">
+<style>
+:root{color-scheme:dark;--bg:#0b0d12;--tx:#e8ecf4;--mt:#8a93a6;--ac:#3dd6f5;--bad:#ff4d5e;--ok:#5de08a;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+html,body{height:100%;margin:0;background:var(--bg);color:var(--tx);font-family:'Sora',system-ui,sans-serif;overflow:hidden;user-select:none;-webkit-user-select:none}
+#app{max-width:880px;margin:0 auto;height:100%;display:flex;flex-direction:column;justify-content:center;gap:12px;padding:10px;box-sizing:border-box}
+#nar{min-height:84px;background:linear-gradient(90deg,#1c1022,#141823);border:1px solid #2b2236;border-left:3px solid var(--bad);border-radius:12px;padding:10px 16px;box-sizing:border-box}
+.who{font-size:10px;letter-spacing:.22em;color:var(--bad)}
+#nt{margin:4px 0 0;font-size:clamp(16px,3.2vw,23px);font-weight:600;line-height:1.3}
+#nt.in{animation:nin .35s ease-out}@keyframes nin{from{opacity:0;transform:translateY(8px);filter:blur(3px)}}
+#stage{position:relative;aspect-ratio:16/9;width:100%;background:#0e1118;border:1px solid #232a3a;border-radius:14px;overflow:hidden;box-shadow:0 0 40px -14px var(--ac);transition:box-shadow .5s}
+canvas{position:absolute;inset:0;width:100%;height:100%}
+#ui,#ov{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px;padding:12px;box-sizing:border-box}
+#ov{pointer-events:none}#ov>*{pointer-events:auto}
+.big{font-size:clamp(20px,4.5vw,38px);font-weight:800}
+.num{font-size:clamp(50px,13vw,110px);font-weight:800;color:var(--ac);font-variant-numeric:tabular-nums;line-height:1}
+.sub{color:var(--mt);font-size:clamp(12px,2vw,15px);margin:0}
+.btn{font:inherit;font-weight:800;padding:12px 26px;border-radius:10px;border:0;background:var(--ac);color:#06121a;cursor:pointer;transition:transform .12s,filter .12s,box-shadow .12s;font-size:clamp(14px,2.4vw,18px)}
+.btn:hover{filter:brightness(1.12);transform:translateY(-2px);box-shadow:0 8px 24px -8px var(--ac)}.btn:active{transform:scale(.94)}
+.btn.alt{background:#232a3a;color:var(--tx)}
+.bar{width:60%;height:8px;background:#222a3a;border-radius:9px;overflow:hidden}.bar i{display:block;height:100%;background:var(--ac);width:100%}
+.gb{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}.gb .btn{min-width:110px;color:#fff;text-shadow:0 1px 3px #0009}
+.ttl{font-size:clamp(34px,9vw,76px);line-height:.95;margin:0;font-weight:800;letter-spacing:-.02em;background:linear-gradient(180deg,#fff,#ff4d5e);-webkit-background-clip:text;background-clip:text;color:transparent}
+#tag{position:absolute;left:12px;top:10px;font-size:11px;letter-spacing:.2em;color:var(--ac);opacity:.85}
+#flash{position:absolute;inset:0;pointer-events:none;opacity:0}#flash.go{animation:fl .5s ease-out}@keyframes fl{from{opacity:.5}to{opacity:0}}
+.shake{animation:sh .4s}@keyframes sh{20%{transform:translate(-9px,3px)}40%{transform:translate(8px,-4px)}60%{transform:translate(-5px,2px)}80%{transform:translate(3px,-1px)}}
+.glitch{animation:gl .55s steps(6)}@keyframes gl{0%{filter:hue-rotate(90deg) contrast(1.6);transform:translateX(-12px) skewX(6deg)}50%{filter:invert(1);transform:translateX(10px)}100%{filter:none;transform:none}}
+.inn{animation:inn .45s ease-out}@keyframes inn{from{opacity:0;transform:translateX(30px) scale(.98)}}
+.clr h2{margin:0;font-size:clamp(22px,5vw,44px);letter-spacing:.08em;animation:pop .5s cubic-bezier(.2,1.6,.4,1)}
+.ring{width:84px;height:84px;border-radius:50%;border:4px solid var(--ok);display:grid;place-items:center;font-size:44px;color:var(--ok);margin:auto;animation:pop .5s cubic-bezier(.2,1.6,.4,1)}
+@keyframes pop{from{transform:scale(.3);opacity:0}}
+.fv small{color:#ffffff4d;font-size:11px}
+.lb{width:60%;height:14px;background:#222a3a;border-radius:9px;overflow:hidden}.lb i{display:block;height:100%;width:0;background:var(--ok)}
+.dim canvas,.dim #ui,.dim #tag{opacity:0}.dim{box-shadow:none!important}
+#ov.black{background:#000}
+#ctl{display:none;gap:10px;justify-content:space-between}
+#ctl button{flex:1;height:54px;border-radius:12px;border:1px solid #2a3348;background:#171c28;color:var(--tx);font-size:22px;touch-action:none}
+@media(pointer:coarse){#ctl.on{display:flex}}
+#pbtn{position:absolute;right:10px;top:8px;z-index:8;display:none;height:32px;padding:0 14px;border-radius:16px;background:#171c28cc;border:1px solid #2a3348;color:var(--tx);font:700 12px Sora,system-ui,sans-serif;cursor:pointer;transition:transform .12s,background .12s}#pbtn.on{display:block}#pbtn:hover{background:#232a3a;transform:translateY(-1px)}#pbtn:active{transform:scale(.94)}
+#pz{position:absolute;inset:0;z-index:9;display:none;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:rgba(8,10,16,.9);backdrop-filter:blur(6px)}#pz.on{display:flex}@keyframes pin{from{opacity:0}}
+.ps *{animation-play-state:paused!important}
+#mute{position:fixed;right:10px;top:calc(10px + env(safe-area-inset-top,0px));background:#171c28;border:1px solid #2a3348;color:var(--tx);border-radius:50%;width:36px;height:36px;cursor:pointer;z-index:5}
+</style></head><body>
+<div id="app"><div id="nar"><div class="who">NARRATOR</div><p id="nt"></p></div>
+<div id="stage"><canvas id="cv" width="800" height="450"></canvas><div id="ui"></div><div id="ov"></div><div id="flash"></div><div id="tag"></div><button id="pbtn">❚❚ PAUSE</button><div id="pz"><div class="big">PAUSED</div><p class="sub">The narrator is thrilled. He needed a break too.</p><button class="btn" id="pr">RESUME</button><button class="btn alt" id="prs">RESTART SEGMENT</button><button class="btn alt" id="pm">MAIN MENU</button></div></div>
+<div id="ctl"><button data-k="arrowleft">◀</button><button data-k="arrowright">▶</button><button data-k=" ">⤒ JUMP</button></div></div>
+<button id="mute" title="Mute">♪</button>
+<script>
+const $=s=>document.querySelector(s),rn=(a,b)=>a+Math.random()*(b-a),ri=(a,b)=>Math.floor(rn(a,b+.999)),pick=a=>a[ri(0,a.length-1)],shuf=a=>a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(x=>x[1]);
+const st={g:k=>{try{return localStorage.getItem(k)}catch(e){return null}},s:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}}};
+let paused=false,playing=false,sfc={};const RST=window.setTimeout.bind(window);let TQ=[],tid=1;
+window.setTimeout=(f,ms=0)=>{TQ.push({id:tid,f,ms});return tid++};window.clearTimeout=id=>{const i=TQ.findIndex(q=>q.id==id);if(i>=0)TQ.splice(i,1)};
+function tickQ(dt){const m=dt*1000;for(const q of TQ.slice()){q.ms-=m;if(q.ms<=0){const i=TQ.indexOf(q);if(i>=0){TQ.splice(i,1);try{q.f()}catch(e){console.error(e)}}}}}
+const cv=$('#cv'),X=cv.getContext('2d'),ui=$('#ui'),ov=$('#ov'),stage=$('#stage'),keys={};
+/* ---------- audio ---------- */
+let AC,mg,flt,muted=false,mood=.1,bi=0,silent=false;
+function ai(){try{if(!AC){AC=new(window.AudioContext||window.webkitAudioContext)();music()}if(AC.state=='suspended')AC.resume()}catch(e){}}
+function tone(f,d=.15,t='sine',v=.12,s=0,w=0){if(!AC||muted||silent)return;const o=AC.createOscillator(),g=AC.createGain(),n=AC.currentTime+w;o.type=t;o.frequency.setValueAtTime(f,n);if(s)o.frequency.exponentialRampToValueAtTime(Math.max(20,f+s),n+d);g.gain.setValueAtTime(v,n);g.gain.exponentialRampToValueAtTime(.001,n+d);o.connect(g);g.connect(AC.destination);o.start(n);o.stop(n+d+.02)}
+function music(){mg=AC.createGain();mg.gain.value=.5;mg.connect(AC.destination);flt=AC.createBiquadFilter();flt.type='lowpass';flt.frequency.value=300;flt.connect(mg);
+[55,55.6,82.4,110.3].forEach(f=>{const o=AC.createOscillator(),g=AC.createGain();o.type='sawtooth';o.frequency.value=f;g.gain.value=.04;o.connect(g);g.connect(flt);o.start()});
+(function b(){if(!muted&&!silent&&!paused&&mood>0)tone([55,55,65.4,49][bi++%4],.3,'sawtooth',.08+mood*.05);RST(b,650-mood*380)})()}
+function setMood(m){mood=m;if(flt){flt.frequency.value=250+m*1900;mg.gain.value=(muted||silent)?0:.5}}
+const sfx={click:()=>tone(520,.07,'square',.07),nar:()=>tone(880+ri(0,220),.04,'sine',.025),soft:()=>tone(440,.14,'sine',.1,120),
+die:()=>{tone(300,.5,'sawtooth',.16,-250);tone(90,.4,'square',.12,-40,.05)},near:()=>{tone(660,.1,'triangle',.14);tone(520,.3,'triangle',.14,-80,.1);tone(110,.4,'sawtooth',.1,-40,.2)},
+clear:()=>[523,659,784,1047].forEach((f,i)=>tone(f,.4,'triangle',.16,0,i*.09)),
+fake:()=>{[523,659,784,1047].forEach((f,i)=>tone(f,.3,'triangle',.15,0,i*.09));tone(130,.5,'sawtooth',.14,-40,.55)},
+fakeWin:()=>[523,659,784,988].forEach((f,i)=>tone(f,.4,'triangle',.16,0,i*.09)),
+buzz:()=>tone(110,.4,'sawtooth',.15,-30),final:()=>[262,330,392,523,659].forEach((f,i)=>tone(f,1.4,'sine',.1,0,i*.22))};
+$('#mute').onclick=e=>{ai();muted=!muted;e.target.textContent=muted?'✕':'♪';setMood(mood)};
+/* ---------- fx ---------- */
+const PT=[];function burst(x,y,c,n=18,sp=260){for(let i=0;i<n;i++){const a=rn(0,6.28),s=rn(.2,1)*sp;PT.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s-60,l:rn(.4,.9),m:.9,c})}}
+function anim(c){stage.classList.remove('shake','glitch','inn');void stage.offsetWidth;stage.classList.add(c)}
+function flash(c){const f=$('#flash');f.style.background=c;f.classList.remove('go');void f.offsetWidth;f.classList.add('go')}
+const shake=()=>anim('shake');
+/* ---------- narrator ---------- */
+let lastSay=0;const nt=$('#nt');
+function say(t){lastSay=performance.now();nt.textContent=t;nt.classList.remove('in');void nt.offsetWidth;nt.classList.add('in');sfx.nar()}
+const L={start:["Oh, a challenger. How adorable. Try to last longer than the last one.","Welcome! I’m here to help you. (I’m not.)","Ah, fresh meat. I mean… player. Fresh player."],
+fail:["Oh, you almost had it. Almost.","Interesting strategy. Wrong, but interesting.","Even a child would have gotten that by now.","I believe in you. That was a lie.","Some people just aren’t built for this.","Again? Sure. I have all day. You don’t.","That was painful to watch. I watched it twice.","Just give up. It’s fine. Nobody’s watching. Except me.","Brave. Wrong, but brave.","You’re slow. Not an insult. A measurement."],
+many:["Still here? Persistent. Pointless, but persistent.","Honestly I’m starting to respect the stubbornness. Not the skill.","Every failure makes me stronger. Every single one.","Your reflexes called. They’re not coming."],
+sneaky:["Did you think that was a checkpoint? Oh no. It was just a hallway. Back you go.","Progress? I forgot to save it. On purpose.","You lost a whole segment. You’re welcome.","Checkpoint? What checkpoint? Sad."],
+ok:["Congratulations. That was luck.","Fine. One point for you. Zero for effort.","Oh. You did it. Don’t let it go to your head.","Beginner’s luck. Enjoy it.","Hm. I’ll make the next one harder."],
+brk:["Congratulations. That didn’t count.","Did I say that was the goal? New goal.","You won! …the practice round.","Sorry, my mistake. Do it again, but faster."],
+clr:["Segment cleared. Genuinely. I’m annoyed.","Okay, that one counted. Savor it.","Progress saved. Probably.","Fine. That’s real. Don’t get comfortable."],
+idle:["Take your time. I’ll just be here. Judging.","Is it the keyboard? It’s usually not the keyboard.","Hurry up. Or don’t. I enjoy this.","Any day now."],
+chaos:["No breaks now.","Still alive? Hm.","Let me turn it up.","Keep going. Or don’t. I win either way."]};
+/* ---------- run / segments ---------- */
+const TY={plat:['CONTROL','#3dd6f5'],still:['INSTRUCTION','#ffb020'],green:['INSTRUCTION','#ffb020'],count:['INSTRUCTION','#ffb020'],rapid:['HYBRID','#d65cff'],load:['TRANSITION','#9aa3b5'],fakewin:['SEGMENT','#5de08a'],rev:['REVERSE GRAVITY','#d65cff'],quiz:['QUIZ','#ffb020'],memo:['MEMORY','#ffb020'],react:['REFLEX','#ffb020'],dodge:['INSTRUCTION','#ffb020']};
+let seq,idx,fails,t0,cur,run,pos=0;
+function gen(){const pool=[];shuf(['grav','crumble','blink','big','spikes']).slice(0,ri(3,4)).concat(['invert']).forEach(v=>pool.push({k:'plat',v}));pool.push({k:'plat',v:'freeze'});
+shuf(['still','green','count','quiz','memo','react','dodge']).slice(0,ri(5,6)).forEach(k=>pool.push({k}));pool.push({k:'rapid'},{k:'load'});for(let i=ri(1,2);i>0;i--)pool.push({k:'rev'});
+for(let i=pick([1,1,2,2]);i>0;i--)pool.push({k:'fakewin'});
+let a=shuf(pool);const f=a.findIndex(s=>['still','green'].includes(s.k)||(s.k=='plat'&&['invert','crumble','grav'].includes(s.v)));a.unshift(a.splice(f,1)[0]);
+for(let i=0;i<2;i++)if(a[i].k=='fakewin'||a[i].k=='load'){const j=a.findIndex((s,n)=>n>2&&s.k!='fakewin');[a[i],a[j]]=[a[j],a[i]]}
+a.forEach((s,i)=>{const fk=s.k=='fakewin';s.clear=!fk&&Math.random()<.5;s.brk=!fk&&s.k!='load'&&i>0&&Math.random()<.5;s.cp=i==0||s.clear||Math.random()<.45});
+const parts=shuf([{k:'plat',v:'mix',tw:1},{k:'rapid',tw:1},{k:'still',tw:1},{k:'green',tw:1},{k:'count',tw:1},{k:'plat',v:'freeze',tw:1},{k:'rev',tw:1},{k:'quiz',tw:1},{k:'memo',tw:1},{k:'react',tw:1},{k:'plat',v:'big',tw:1},{k:'plat',v:'spikes',tw:1}]).slice(0,8);
+if(Math.random()<.5)parts.push({k:'fakewin'});parts.push({k:'plat',v:'mix',tw:1});a.push({k:'final',parts,cp:1,clear:0});return a}
+function begin(sv){ai();seq=sv?sv.seq:gen();idx=sv?sv.i:0;fails=0;sfc={};t0=Date.now();run={gs:rn(.9,1.12)};ov.innerHTML='';say(sv?"Back already? I kept your seat warm. It’s a trap.":"Let’s begin. Please don’t embarrass us both.");setTimeout(()=>runSeg(idx),1400)}
+function mk(sp,part,i){const T=[],Ls=[];const S={spec:part,twist:!!(part.tw||sp.tw),dead:false,
+t(f,ms){const id=setTimeout(()=>{if(!S.dead)f()},ms);T.push(id)},
+l(a,b,c){a.addEventListener(b,c);Ls.push([a,b,c])},
+end(){S.dead=true;T.forEach(clearTimeout);Ls.forEach(([a,b,c])=>a.removeEventListener(b,c));S.upd=null},
+win(q){if(S.dead)return;S.end();won(q)},lose(m,n){if(S.dead)return;S.end();fail(m,n)}};return S}
+function runSeg(i,p=0){idx=i;pos=p;const sp=seq[i],part=sp.parts?sp.parts[p]:sp;if(cur)cur.end();const S=cur=mk(sp,part,i);S.ez=Math.min(1.6,Math.max(1,1+.12*((sfc[i+':'+p]||0)-2)));setPlay(true);ui.innerHTML='';ov.innerHTML='';ov.className='';stage.classList.remove('dim');
+const ty=sp.parts?['FINAL · NO MERCY','#ff4d5e']:TY[part.k];stage.style.setProperty('--ac',ty[1]);$('#tag').textContent=(part.k=='fakewin'?'':ty[0]+' · ')+'SEGMENT '+String(i+1).padStart(2,'0');
+$('#ctl').classList.toggle('on',part.k=='plat');anim('inn');setMood(Math.min(1,.15+.85*i/Math.max(1,seq.length-1)));SG[part.k](S)}
+function won(q){const sp=seq[idx];if(sp.parts){if(pos+1<sp.parts.length){sfx.soft();say(pick(L.chaos));return setTimeout(()=>runSeg(idx,pos+1),700)}return next()}
+if(sp.brk){sp.brk=0;sp.tw=1;sfx.fake();burst(400,225,'#5de08a',30);ov.innerHTML='<div class="clr"><div class="ring">✓</div></div>';setTimeout(()=>{ov.innerHTML='';anim('glitch');sfx.buzz();say(pick(L.brk))},900);return setTimeout(()=>runSeg(idx),2200)}
+if(sp.clear){sfx.clear();flash('#5de08a');burst(400,225,'#5de08a',50,380);ov.innerHTML=`<div class="clr"><div class="ring">✓</div><h2>SEGMENT ${idx+1} CLEARED</h2></div>`;say(pick(L.clr));st.s('rb',JSON.stringify({seq,i:idx+1}));return setTimeout(next,2000)}
+sfx.soft();if(!q)say(pick(L.ok));setTimeout(next,q?1800:900)}
+function next(){if(idx+1>=seq.length)return ending();runSeg(idx+1)}
+function fail(m,near){fails++;near?sfx.near():sfx.die();shake();flash('#ff4d5e');burst(400,225,'#ff4d5e',26);let j=idx;while(j>0&&!seq[j].cp)j--;
+say(m||(fails>5&&Math.random()<.4?pick(L.many):pick(L.fail)));const back=j<idx;if(back)setTimeout(()=>say(pick(L.sneaky)),1500);const fk=idx+':'+pos,fc=sfc[fk]=(sfc[fk]||0)+1;if(fc%4==0)setTimeout(()=>{say(pick(["You’ve died here "+fc+" times. The exit is right there. Nobody would judge. (I would.)","Need a break? The menu is over there. Crying is optional."]));ov.innerHTML='<button class="btn" id="ra">TRY AGAIN</button><button class="btn alt" id="rm">MAIN MENU</button>';$('#ra').onclick=()=>{sfx.click();ov.innerHTML='';runSeg(j)};$('#rm').onclick=()=>{sfx.click();toMenu()}},back?2400:1000);else setTimeout(()=>runSeg(j),back?2700:1200)}
+function ending(){if(cur)cur.end();cur=null;setPlay(false);silent=true;setMood(0);ui.innerHTML='';ov.innerHTML='';ov.className='black';$('#ctl').classList.remove('on');
+const E=["…","That… no. That doesn’t count.","Let me check the rules. I wrote them. There must be a rule.","…There isn’t.","You actually did it.","Fine. You win. Happy now?"];
+E.forEach((t,i)=>setTimeout(()=>say(t),1200+i*2700));
+setTimeout(()=>{silent=false;setMood(.05);sfx.final();st.s('rbw',(+st.g('rbw')||0)+1);const s=Math.round((Date.now()-t0)/1000);ov.className='';stage.classList.add('dim');ov.innerHTML=`<h1 class="ttl" style="background:linear-gradient(180deg,#fff,#5de08a);-webkit-background-clip:text;background-clip:text">THE NARRATOR<br>HAS FALLEN.</h1><p class="sub">Time ${Math.floor(s/60)}:${String(s%60).padStart(2,'0')} · Failures ${fails} · Segments ${seq.length}</p><button class="btn" id="again">PLAY AGAIN (new sequence)</button>`;
+stage.style.setProperty('--ac','#5de08a');[0,1,2,3].forEach(n=>setTimeout(()=>burst(rn(100,700),rn(80,300),pick(['#5de08a','#3dd6f5','#ffb020','#d65cff']),40,420),n*350));$('#again').onclick=()=>{sfx.click();silent=false;begin()}},1200+E.length*2700+1500)}
+function title(){cur=null;setPlay(false);const sv=st.g('rb');say(pick(L.start));ov.innerHTML=`<h1 class="ttl">NO. YOU<br>WON’T.</h1><p class="sub">A game that hates you. Beat it anyway.<br>← → move · space jump · mouse for the rest</p><button class="btn" id="go">BEGIN</button>${sv?'<button class="btn alt" id="ct">CONTINUE FROM LAST CLEARED SEGMENT</button>':''}`;
+$('#go').onclick=()=>{ai();sfx.click();begin()};if(sv)$('#ct').onclick=()=>{ai();sfx.click();try{begin(JSON.parse(sv))}catch(e){begin()}}}
+/* ---------- input ---------- */
+addEventListener('keydown',e=>{const k=e.key.toLowerCase();if([' ','arrowup','arrowdown','arrowleft','arrowright'].includes(k))e.preventDefault();if(e.repeat)return;if(playing&&cur&&(k=='escape'||k=='p')){paused?resume():pause();return}if(paused)return;keys[k]=1;if(cur&&!cur.dead&&cur.key)cur.key(e)});
+addEventListener('keyup',e=>{const k=e.key.toLowerCase();if(k==' ')e.preventDefault();delete keys[k]});
+addEventListener('blur',()=>{for(const k in keys)delete keys[k]});
+addEventListener('pointerdown',e=>{ai();if(!paused&&cur&&!cur.dead&&cur.ptr&&!e.target.closest('#ctl,#mute,#pbtn,#pz'))cur.ptr(e)});
+document.querySelectorAll('#ctl button').forEach(b=>{const k=b.dataset.k;b.addEventListener('pointerdown',e=>{e.preventDefault();if(paused)return;keys[k]=1;if(k==' '&&cur&&cur.key)cur.key({key:' '})});['pointerup','pointerleave','pointercancel'].forEach(v=>b.addEventListener(v,()=>delete keys[k]))});
+/* ---------- segments ---------- */
+const SG={};
+SG.plat=S=>{const v=S.spec.v,tw=S.twist,N=(v=='mix'?10:8)+(tw?3:0),P=[{x:0,y:380,w:190,h:20,vis:1,i:0,st:0,rs:0}];let x=190,y=380;
+const nc=!(v=='crumble'||v=='mix'||v=='blink'),bgv=v=='big',hf=Math.floor(N/2),tp=v=='spikes'?.9:.6;
+for(let i=0;i<N;i++){const B=bgv&&i<hf;x+=B?ri(130,210):ri(70,125);y=Math.max(B?150:190,Math.min(395,y+(B?ri(-110,60):ri(-70,55))));let w=ri(95,150),tr=null;if(nc&&!B&&i>0&&i<N-1&&Math.random()<tp){tr=pick(['hide','detach','fake']);w=ri(170,210)}P.push({x,y,w,h:18,vis:1,i:i+1,st:0,rs:0,tr,u:-1,off:0,sh:0,sk:0,fake:Math.random()<.4,cd:rn(.7,1.7),fv:nc&&(tr||Math.random()<.2)?1:0,sp:!tr&&i>0&&w>=115&&Math.random()<.55});x+=w}
+const lp=P[P.length-1],goal={x:lp.x+lp.w/2,y:lp.y-32},W=lp.x+lp.w+150,p={x:60,y:340,w:22,h:22,vx:0,vy:0,g:0,coy:0,sq:0};
+let G=1500*run.gs,JV=-560,inv=0,tm=0,sd=0,jb=0,fz=0,fzd=0,cam=0,tt=0,bigm=bgv?1:0,seen=0;const crum=v=='crumble'||v=='mix',blink=v=='blink',E=[];
+const mv=['arrowleft','arrowright','arrowup','a','d','w',' '];
+const TRR={hide:75,detach:190,fake:220};function trs(q,dt){const cx=q.x+q.w/2;if(q.u<0){if(Math.abs(p.x+11-cx)<TRR[q.tr]&&p.y<q.y+30&&p.y>q.y-320)q.u=0;else{q.off=0;q.sh=q.tr=='hide'?0:1;return}}else q.u+=dt;const u=q.u;
+if(q.tr=='hide'){q.sh=Math.min(1,u/.08);q.off=0}else if(q.tr=='detach'){q.sh=1;q.off=u<.35?0:Math.min(80,80*(u-.35)/.55);q.sk=u<.35}else{q.sh=1;q.off=u<.5?62*u/.5:u<1.3?62:u<1.4?62*(1-(u-1.3)/.1):0}}
+if(v=='invert'){E.push([rn(2,3.5),()=>{inv=1;say("Left is left. Right is right. Whatever you’re feeling is your problem.")}],[rn(8,10),()=>{inv=0;say("Back to normal. …Probably.")}]);if(tw)E.push([12,()=>{inv=1;say("Oh, it’s doing that again.")}])}
+if(v=='grav'){E.push([2.5,()=>{G*=.4;JV*=.82;say("Gravity’s feeling generous today.")}],[6.5,()=>{G*=3.4;JV*=1.2;say("Gravity changed its mind.")}])}
+if(v=='crumble')E.push([2.5,()=>say("Solid ground is a strong word.")]);
+if(v=='big')E.push([.2,()=>say("Jump power: suspicious. Enjoy it. Briefly.")]);if(v=='spikes')E.push([1,()=>say("Spikes. They go up. They go down. It’s called timing.")]);
+if(v=='blink')E.push([1.5,()=>say("Blink and you’ll miss it. Literally.")]);
+if(v=='mix')E.push([3,()=>{inv=1;say("Fun fact: left is now right.")}],[7,()=>{inv=0;G*=.45;JV*=.85;say("Now you’re on the moon.")}],[11,()=>{G*=3;JV*=1.15;say("And now you’re not.")}]);
+if(!['invert','mix','freeze'].includes(v)&&Math.random()<.45){const a=rn(3,6);E.push([a,()=>{inv=1;say("Oh, did I forget to mention? Controls are flipped now.")}],[a+rn(4,6),()=>{inv=0;say("Back to normal. Or is it?")}])}E.sort((x,y)=>x[0]-y[0]);
+S.key=e=>{const k=e.key.toLowerCase();if(fz>0&&mv.includes(k)&&fz<2.6)return S.lose("I said. DO NOT. MOVE.");if([' ','arrowup','w'].includes(k))jb=.12};
+S.upd=dt=>{tt+=dt;const hk=keys.arrowleft||keys.arrowright||keys.a||keys.d||keys.arrowup||keys.w||keys[' '];if(!sd&&hk&&fz<=0)sd=1;if(sd)tm+=dt;while(E.length&&tm>=E[0][0])E.shift()[1]();
+let ax=((keys.arrowright||keys.d)?1:0)-((keys.arrowleft||keys.a)?1:0);if(inv)ax=-ax;
+if(v=='freeze'&&!fzd&&p.g&&p.x>P[3].x+20){fzd=1;fz=3;say("DO NOT MOVE. Not a muscle.");ui.innerHTML='<div class="num" id="fzn" style="color:#ff4d5e">3</div><div class="big">DO NOT MOVE</div>';sfx.near()}
+if(fz>0){fz-=dt;const n=$('#fzn');if(n)n.textContent=Math.max(1,Math.ceil(fz));if(fz<2.5&&(ax||keys[' ']||keys.arrowup||keys.w))return S.lose("I said DO NOT MOVE. It was one instruction.");if(fz<=0){ui.innerHTML='';say("Fine. You may move. Sad, really.")}ax=0}
+p.vx+=(ax*240-p.vx)*Math.min(1,dt*(p.g?14:7));const py=p.y;p.vy+=G*((p.big&&p.vy>0)?.3:1)*dt;if(p.big&&p.vy>140)p.vy=140;p.y+=p.vy*dt;p.x+=p.vx*dt;p.x=Math.max(0,p.x);
+const jd=keys[' ']||keys.arrowup||keys.w;if(!jd&&p.vy<-220&&!p.big)p.vy+=2600*dt;
+let on=null;if(p.vy>=0)for(const q of P)if(q.vis&&p.x+p.w>q.x+2&&p.x<q.x+q.w-2&&py+p.h<=q.y+6&&p.y+p.h>=q.y){p.y=q.y-p.h;if(p.vy>300){p.sq=.35;tone(170,.07,'sine',.08);burst(p.x+11-cam,p.y+22,'#8a93a6',6,120)}p.vy=0;p.big=0;on=q;break}
+p.g=on?1:0;p.coy=on?.1:p.coy-dt;jb-=dt;if(jb>0&&p.coy>0){p.big=bigm;p.vy=bigm?-840:JV;p.coy=0;jb=0;p.sq=-.3;bigm?tone(300,.5,'sine',.12,700):tone(380,.12,'square',.06,220);burst(p.x+11-cam,p.y+22,bigm?'#ffd23d':'#3dd6f5',bigm?16:6,bigm?200:110)}
+p.sq*=Math.pow(.001,dt);
+if(bigm&&p.x>P[hf].x+30){bigm=0;say("Jump power: back to normal. Sorry. Not sorry.")}if(p.big&&Math.random()<.6)burst(p.x+11-cam,p.y+11,'#ffd23d',1,40);
+for(const q of P){q.on=q===on;if(q.on&&(q.fv||crum&&q.i>=2)&&Math.random()<dt*10)burst(q.x+rn(0,q.w)-cam,q.y+18,'#4a5570',1,40)}
+if(on&&on.fv){if(!on.fs){on.fs=1;say(pick(["Oh no. The floor is shaking. Totally normal.","That tile looks nervous. Are you?"]))}if(Math.random()<dt*3)tone(60+ri(0,25),.12,'sawtooth',.05)}
+for(const q of P){if(crum&&q.i>=2){if(q===on)q.st+=dt;else if(q.vis)q.st=Math.max(0,q.st-dt);if(q.st>q.cd&&q.vis&&!q.fake){q.vis=0;q.rs=2.8;burst(q.x+q.w/2-cam,q.y,'#4a5570',14,160)}if(!q.vis){q.rs-=dt;if(q.rs<=0){q.vis=1;q.st=0}}}if(blink&&q.i>=1&&tm>1.5)q.vis=((tm*.9+q.i*.41)%1)<.7?1:0}
+for(const q of P)if(q.sp&&q.vis){const x0=q.x+q.w/2-15;if(p.x+p.w>x0+5&&p.x<x0+25&&p.y+p.h>q.y-13&&p.y<q.y)return S.lose(pick(["Spikes. They’re pointy. Everyone knows that.","You walked into the pointy thing. Impressive."]),p.x>goal.x-250)}
+for(const q of P)if(q.tr){trs(q,dt);const cx=q.x+q.w/2;if(!seen&&q.x>p.x&&q.x-p.x<320){seen=1;say(pick(["Nothing dangerous here. Nothing at all.","Go ahead. Walk. I’m sure it’s fine.","What a lovely, empty platform."]))}
+let hit=false;{const hw=q.tr=='detach'?14:15,yb=q.y-q.off,yt=q.tr=='detach'?yb-120:q.tr=='hide'?q.y-30*q.sh:yb-30;hit=(q.tr!='hide'||q.sh>.15)&&p.x+p.w>cx-hw&&p.x<cx+hw&&p.y+p.h>yt&&p.y<yb+3}if(hit)return S.lose(pick(["Wait means wait.","You rushed. The spikes didn’t.","Patience: not found."]),p.x>goal.x-260)}
+if(p.y>480)return S.lose(null,p.x>goal.x-260);
+if(!S.gp&&Math.hypot(p.x-goal.x,p.y-goal.y)<190){S.gp=1;if(Math.random()<.6){if(Math.random()<.5){inv=1;say("So close! Left and right just quit.");S.t(()=>{inv=0},3500)}else{G*=1.9;say("The goal is heavy. So are you, suddenly.");S.t(()=>{G/=1.9},4000)}}}
+if(Math.hypot(p.x+11-goal.x,p.y+11-goal.y)<32){burst(goal.x-cam,goal.y,'#ffd23d',30,300);return S.win()}
+cam+=(Math.max(0,Math.min(p.x-250,W-800))-cam)*Math.min(1,dt*6)};
+S.draw=c=>{bg(c,tt);c.save();c.translate(-cam,0);for(const q of P){const a=q.vis?1:.1,sh=q.on&&q.vis&&(q.fv||crum&&q.i>=2)?Math.sin(tt*70+q.i*2)*2.4:0;c.globalAlpha=a;c.fillStyle='#252d40';c.beginPath();c.roundRect(q.x+sh,q.y,q.w,q.h,5);c.fill();c.fillStyle='#3dd6f5';c.fillRect(q.x+sh+3,q.y,q.w-6,3);
+if(q.on&&(q.fv||crum&&q.i>=2)){c.strokeStyle='#0a0d14';c.lineWidth=2;c.beginPath();c.moveTo(q.x+q.w*.3+sh,q.y);c.lineTo(q.x+q.w*.34+sh,q.y+9);c.lineTo(q.x+q.w*.3+sh,q.y+18);c.moveTo(q.x+q.w*.7+sh,q.y);c.lineTo(q.x+q.w*.66+sh,q.y+10);c.stroke()}
+if(q.tr&&q.vis&&(q.tr!='hide'||q.sh>.02)){const cx=q.x+q.w/2+(q.sk?Math.sin(tt*90)*2:0),yb=q.y-q.off;c.fillStyle='#ff4d5e';if(q.tr=='detach'){c.fillStyle='#39425a';c.fillRect(cx-13,yb-114,26,100);c.fillStyle='#ff4d5e';for(let k=0;k<3;k++){c.beginPath();c.moveTo(cx-13+k*8.7,yb-14);c.lineTo(cx-8.7+k*8.7,yb);c.lineTo(cx-4.3+k*8.7,yb-14);c.fill();c.beginPath();c.moveTo(cx-13+k*8.7,yb-114);c.lineTo(cx-8.7+k*8.7,yb-124);c.lineTo(cx-4.3+k*8.7,yb-114);c.fill()}}else{const hh=q.tr=='hide'?30*q.sh:28;c.beginPath();for(let k=0;k<2;k++){c.moveTo(cx-15+k*15,yb);c.lineTo(cx-7.5+k*15,yb-hh);c.lineTo(cx+k*15,yb)}c.fill();if(q.off>0){c.beginPath();for(let k=0;k<2;k++){c.moveTo(cx-15+k*15,yb);c.lineTo(cx-7.5+k*15,yb+10);c.lineTo(cx+k*15,yb)}c.fill()}}}
+if(q.sp&&q.vis){const x0=q.x+q.w/2-15;c.fillStyle='#ff4d5e';c.beginPath();c.moveTo(x0,q.y);c.lineTo(x0+15,q.y-16);c.lineTo(x0+30,q.y);c.fill()}}c.globalAlpha=1;
+c.shadowColor='#ffd23d';c.shadowBlur=24;c.fillStyle='#ffd23d';c.beginPath();c.arc(goal.x,goal.y+Math.sin(tt*4)*4,11,0,6.3);c.fill();c.shadowBlur=0;
+c.save();c.translate(p.x+11,p.y+11);const sq=Math.max(-.3,Math.min(.4,p.sq+(p.vy<0?-p.vy/3000:0)));c.scale(1-sq*.5,1+sq*.5);const pc=p.big?'#ffd23d':'#3dd6f5';c.shadowColor=pc;c.shadowBlur=p.big?30:16;c.fillStyle=pc;c.beginPath();c.roundRect(-11,-11,22,22,5);c.fill();c.fillStyle='#06121a';c.fillRect(-5,-4,3,5);c.fillRect(3,-4,3,5);c.restore();c.restore()}};
+SG.still=S=>{const D=S.twist?9:5;let t=D;ui.innerHTML=`<div class="big">DO NOT PRESS OR CLICK<br>ANYTHING</div><div class="num" id="n">${D}</div><div id="sk"></div>`;
+const hit=()=>S.lose(pick(["You touched it. I said not to. Unbelievable.","Did your finger just decide that on its own?","One job. One. Not touching."]));S.key=hit;S.ptr=hit;
+S.upd=dt=>{t-=dt*((t<D*.55&&t>D*.2)?.4:1);$('#n').textContent=Math.max(1,Math.ceil(t));if(t<=0)S.win()};
+S.t(()=>say("Doing great. Doing nothing is hard, isn’t it?"),1500);S.t(()=>{$('#sk').innerHTML='<button class="btn alt">SKIP ›</button>';say("Oh look. A skip button. Just for you.")},D*520);
+S.t(()=>say("Your hand is twitching. I can see it."),D*350)};
+SG.green=S=>{const n=S.twist?6:4,C={GREEN:'#1fa95b',RED:'#e0364a',BLUE:'#3a76e8',YELLOW:'#d98a0a'};let TG,r=0,mode='c',t=0,lim=(S.twist?1.6:2.4)*S.ez,ok;
+function round(){if(r>=n)return S.win();TG=pick(Object.keys(C).filter(k=>k!=TG));if(r==2){mode='l';say("Press the one that SAYS "+TG.toLowerCase()+". It always said that.")}
+const names=Object.keys(C),col=shuf(names);let lab;do{lab=shuf(names)}while(lab.some((l,i)=>l==col[i]));ok=mode=='c'?col.indexOf(TG):lab.indexOf(TG);t=lim;
+ui.innerHTML=`<div class="big">${mode=='c'?'PRESS ONLY THE <span style="color:'+C[TG]+'">'+TG+'</span> BUTTON':'PRESS ONLY THE BUTTON THAT <u>SAYS</u> '+TG}</div><div class="gb">${col.map((c,i)=>`<button class="btn" data-i="${i}" style="background:${C[c]}">${lab[i]}</button>`).join('')}</div><div class="bar"><i id="tb"></i></div>`;
+ui.querySelectorAll('.gb .btn').forEach(b=>b.onclick=()=>{if(+b.dataset.i==ok){sfx.click();tone(780,.1,'triangle',.1);r++;round()}else S.lose("That’s not "+TG.toLowerCase()+". Look at it. Look harder.")})}
+S.upd=dt=>{t-=dt;const b=$('#tb');if(b)b.style.width=Math.max(0,t/lim*100)+'%';if(t<=0)S.lose("Too slow. Colors are hard, I know.")};round()};
+SG.count=S=>{const T=(S.twist?7:6)*S.ez,n0=ri(4,6);let tg=n0,c=0,t=T,ch=0;ui.innerHTML=`<div class="big">PRESS EXACTLY <span id="tg" style="color:var(--ac)">${n0}</span> TIMES</div><button class="btn" id="pb" style="font-size:28px;padding:22px 60px">PRESS</button><div class="sub">(space works too. No counter for you.)</div><div class="bar"><i id="tb"></i></div>`;
+const press=()=>{c++;sfx.click();if(c>tg)S.lose("Too many. Counting is hard, I know.")};S.key=e=>{if(e.key==' '||e.key=='Enter')press()};$('#pb').onclick=e=>{e.target.blur();press()};
+S.upd=dt=>{t-=dt;$('#tb').style.width=t/T*100+'%';if(!ch&&t<T*.55){ch=1;tg=n0+ri(2,4);$('#tg').textContent=tg;say(`Did I say ${n0}? I meant ${tg}. It was always ${tg}.`)}if(t<=0)c==tg?S.win():S.lose(c<tg?"Not enough. Shocking.":"Wrong count.")}};
+SG.rapid=S=>{const N=S.twist?11:7,PR=[['PRESS A','a'],['CLICK','click'],['DO NOTHING',null],['PRESS SPACE',' '],['PRESS L','l']];let i=0,opp=0,need,t,lim;
+function nx(){if(i>=N)return S.win();if(i==3&&!opp){opp=1;say("Opposite rules now. They were always opposite.")}const[tx,k]=pick(PR);need=opp?(k===null?'any':null):k;lim=Math.max(.8,1.6-i*.06)*S.ez;t=lim;
+ui.innerHTML=`<div class="big" style="font-size:clamp(30px,7vw,64px)">${tx}</div>${opp?'<div class="sub" style="color:var(--bad)">OPPOSITE RULES</div>':''}<div class="bar"><i id="tb"></i></div><div class="sub">${i+1} / ${N}</div>`}
+const inp=x=>{if(need===null)return S.lose("I said nothing. NOTHING.");if(need==='any'||need===x){sfx.click();i++;nx()}else S.lose("Wrong. Reading is a skill too.")};S.key=e=>inp(e.key.toLowerCase());S.ptr=()=>inp('click');
+S.upd=dt=>{t-=dt;const b=$('#tb');if(b)b.style.width=Math.max(0,t/lim*100)+'%';if(t<=0){if(need!==null&&need!=='x')S.lose("Too slow.");else{i++;sfx.soft();nx()}}};nx()};
+SG.fakewin=S=>{const W=4.5;let t=W;ui.innerHTML=`<div class="fv"><div class="ring">✓</div><h2 style="margin:10px 0 4px;letter-spacing:.08em">SEGMENT COMPLETE</h2><p class="sub">Great job! You’ve cleared this segment.</p><br><button class="btn" id="ct" style="background:#5de08a">CONTINUE ›</button><br><br><small>psst: do not click continue. wait ${W} seconds.</small></div>`;
+sfx.fakeWin();flash('#5de08a');burst(400,225,'#5de08a',30,320);say("Wow. You actually did it! Go on. Continue. Click it.");
+const bad=()=>{sfx.buzz();S.lose("Natural click. Predictable. Delicious.")};$('#ct').onclick=bad;S.key=e=>{if(e.key=='Enter'||e.key==' ')bad()};
+S.upd=dt=>{t-=dt;if(t<=0){say("…You read the small print. Nobody reads the small print.");S.win(1)}}};
+SG.load=S=>{const D=S.twist?8:6.5;let t=0;ui.innerHTML=`<div class="big">LOADING NEXT SEGMENT…</div><div class="lb"><i id="lf"></i></div><div class="sub" id="lp">0%</div><div class="sub">Please wait.</div><button class="btn alt" id="sk">SKIP</button>`;
+S.ptr=e=>{if(e.target.id=='sk')return S.lose("Skip? It’s a loading screen. There’s no skip.");t=0;sfx.buzz();say(pick(["You touched it. Loading restarted. Physics.","Clicking makes it slower. On purpose."]))};S.key=()=>{t=0;sfx.buzz();say("Keyboard too? Starting over.")};
+S.t(()=>say("Loading… don’t touch anything. Or do. I’ll enjoy that."),1200);
+S.upd=dt=>{t+=dt;const p=Math.min(.99,t/D);$('#lf').style.width=p*100+'%';$('#lp').textContent=Math.floor(p*100)+'%';if(p>=.99&&Math.random()<.01)say("99%. Almost there. Almost.");if(t>=D)S.win()}};
+SG.rev=S=>{const FY=400,CY=60,G2=[[],[]],SPK=[[],[]],n=S.twist?14:10;let x=380;for(let i=0;i<n;i++){const s=ri(0,1),w=ri(170,240);G2[s].push([x,x+w]);SPK[s^1].push(x+w+55);if(Math.random()<.35)SPK[s].push(x-90);x+=w+ri(200,300)}
+const W=x+300,p={x:60,y:FY-22,vy:0,dir:1,g:1,coy:0};let tt=0,cam=0,jb=0,rv=0;const AF=[{t:.3},{t:.55},{t:.8}],solid=(s,cx)=>!G2[s].some(([a,b])=>cx>a&&cx<b);
+S.t(()=>say("Up is down. Down is up. Space flips gravity. You’re welcome."),500);
+S.key=e=>{if([' ','arrowup','w','arrowdown','s'].includes(e.key.toLowerCase()))jb=.12};
+S.upd=dt=>{tt+=dt;let ax=((keys.arrowright||keys.d)?1:0)-((keys.arrowleft||keys.a)?1:0);if(!rv&&p.x>W/2){rv=1;say("Left and right filed a complaint. They swapped.")}if(rv)ax=-ax;
+p.x=Math.max(0,p.x+ax*230*dt);p.vy+=1900*p.dir*dt;p.y+=p.vy*dt;const cx=p.x+11;p.g=0;
+if(p.dir==1&&p.vy>=0&&p.y+22>=FY&&p.y<FY&&solid(0,cx)){p.y=FY-22;p.vy=0;p.g=1}
+if(p.dir==-1&&p.vy<=0&&p.y<=CY&&p.y+22>CY&&solid(1,cx)){p.y=CY;p.vy=0;p.g=1}
+for(let s=0;s<2;s++)for(const sx of SPK[s])if(p.x+22>sx-13&&p.x<sx+13&&(s==0?p.y+22>FY-16:p.y<CY+16))return S.lose(pick(["Spikes on the ceiling. Obviously.","Up is pointy too."]),p.x>W-600);
+for(const f of AF)if(!f.d&&p.x>W*f.t&&p.g){f.d=1;say("Gravity just changed its mind. Not you. Gravity.");S.t(()=>{if(!S.dead){p.dir*=-1;p.vy=p.dir*220;shake()}},700)}
+p.coy=p.g?.1:p.coy-dt;jb-=dt;if(jb>0&&p.coy>0){p.dir*=-1;p.vy=p.dir*220;jb=0;p.coy=0;tone(p.dir>0?500:250,.25,'sine',.1,p.dir>0?-250:300);burst(p.x+11-cam,p.y+11,'#d65cff',8,140)}
+if(p.y>470||p.y<-70)return S.lose(pick(["Gravity is not a suggestion.","Wrong way. Both ways, actually."]),p.x>W-600);if(p.x>W-120){burst(p.x-cam,p.y,'#ffd23d',30,300);return S.win()}
+cam+=(Math.max(0,Math.min(p.x-250,W-800))-cam)*Math.min(1,dt*6)};
+S.draw=c=>{bg(c,tt);c.save();c.translate(-cam,0);for(let s=0;s<2;s++){const y=s?CY-20:FY;c.fillStyle='#252d40';c.fillRect(0,y,W,20);c.fillStyle=s?'#d65cff':'#3dd6f5';c.fillRect(0,s?CY-3:FY,W,3);c.fillStyle='#0e1118';for(const[a,b]of G2[s])c.fillRect(a,y-1,b-a,22)}
+c.fillStyle='#ff4d5e';for(let s=0;s<2;s++)for(const sx of SPK[s]){c.beginPath();if(s==0){c.moveTo(sx-13,FY);c.lineTo(sx,FY-16);c.lineTo(sx+13,FY)}else{c.moveTo(sx-13,CY);c.lineTo(sx,CY+16);c.lineTo(sx+13,CY)}c.fill()}
+c.fillStyle='#ffd23d88';c.fillRect(W-120,0,8,450);const pc=p.dir>0?'#3dd6f5':'#d65cff';c.save();c.translate(p.x+11,p.y+11);c.shadowColor=pc;c.shadowBlur=16;c.fillStyle=pc;c.beginPath();c.roundRect(-11,-11,22,22,5);c.fill();c.fillStyle='#06121a';c.fillRect(-5,p.dir*3-3,3,5);c.fillRect(3,p.dir*3-3,3,5);c.restore();c.restore()}};
+SG.quiz=S=>{const B=[{q:'How many months have 28 days?',o:['1','2','12','0'],a:'12'},{q:'A farmer has 17 sheep. All but 9 run away. How many are left?',o:['8','9','17','0'],a:'9'},{q:'What is 5 + 5 × 0 ?',o:['0','5','10','55'],a:'5'},{q:'Which is heavier: 1 kg of feathers or 1 kg of iron?',o:['Feathers','Iron','Same','Depends'],a:'Same'},{q:'What COLOR is this word? <b style="color:#e0364a">BLUE</b>',o:['Blue','Red','Green','Both'],a:'Red'},{q:'Which is the smallest number?',o:['0.9','0.09','0.19','9'],a:'0.09'},{q:'How many F’s: FINISHED FILES ARE THE RESULT OF YEARS OF SCIENTIFIC STUDY',o:['3','4','5','6'],a:'6'},{q:'Click the second option.',o:['First','Third','Second','Fourth'],a:'Third'},{q:'How many animals did Moses take on the ark?',o:['2','0','7','14'],a:'0'}];
+const Q=shuf(B).slice(0,S.twist?5:3),lim=(S.twist?6.5:8)*S.ez;let r=0,t=0;S.t(()=>say("Easy quiz. The answers are obvious. That’s the trap."),400);
+function ask(){if(r>=Q.length)return S.win();const b=Q[r];t=lim;ui.innerHTML=`<div class="sub">QUESTION ${r+1} / ${Q.length}</div><div class="big" style="font-size:clamp(16px,3.4vw,28px)">${b.q}</div><div class="gb">${shuf(b.o).map(o=>`<button class="btn" style="background:#2a3348;color:#fff">${o}</button>`).join('')}</div><div class="bar"><i id="tb"></i></div>`;
+ui.querySelectorAll('.gb .btn').forEach(e=>e.onclick=()=>{if(e.textContent==b.a){sfx.click();tone(780,.1,'triangle',.1);r++;ask()}else S.lose(pick(["Wrong. Spectacularly.","Even the sheep knew that.","Read it again. Slowly. Like I’m not mocking you."]))})}
+S.upd=dt=>{t-=dt;const b=$('#tb');if(b)b.style.width=Math.max(0,t/lim*100)+'%';if(t<=0)S.lose("Too slow. Thinking is optional, apparently.")};ask()};
+SG.memo=S=>{const n=S.twist?6:4,C=['#e0364a','#3a76e8','#1fa95b','#d98a0a'],F=[262,330,392,523],q=Array.from({length:n},()=>ri(0,3)),w=7*S.ez;let ph=0,k=0,t=0;
+ui.innerHTML=`<div class="big" id="mt">WATCH</div><div class="gb">${C.map((c,i)=>`<button class="btn" data-i="${i}" style="background:${c};width:100px;height:100px;opacity:.45">&nbsp;</button>`).join('')}</div><div class="bar"><i id="tb"></i></div>`;
+const B=[...ui.querySelectorAll('.gb .btn')],lit=(i,o)=>{B[i].style.opacity=o?1:.45;B[i].style.transform=o?'scale(1.12)':''};
+q.forEach((v,j)=>{S.t(()=>{lit(v,1);tone(F[v],.35,'triangle',.15)},900+j*750);S.t(()=>lit(v,0),900+j*750+450)});
+S.t(()=>{ph=1;t=w;$('#mt').textContent='YOUR TURN';say("Go on. Repeat it. Unless you forgot already.")},900+n*750);S.t(()=>say("Watch carefully. Don’t blink. Or do. Blinking’s funnier."),300);
+B.forEach((b,i)=>b.onclick=()=>{if(ph!=1)return S.lose("I said WATCH. Not poke.");tone(F[i],.25,'triangle',.15);lit(i,1);S.t(()=>lit(i,0),180);if(q[k]!=i)return S.lose("That wasn’t the sequence. Nice try though.");k++;t=w;if(k>=n)S.win()});
+S.upd=dt=>{if(ph==1){t-=dt;$('#tb').style.width=Math.max(0,t/w*100)+'%';if(t<=0)S.lose("Memory loss. Sad.")}}};
+SG.react=S=>{const n=S.twist?4:3;let r=0,st=0,t=0;ui.innerHTML=`<div class="big">CLICK ONLY WHEN IT’S GREEN</div><div id="rc" style="width:min(30vw,150px);height:min(30vw,150px);border-radius:50%;background:#e0364a;cursor:pointer;box-shadow:0 0 40px #e0364a88;transition:background .08s"></div><div class="sub" id="rs">0 / ${n}</div>`;
+const rc=$('#rc'),paint=c=>{rc.style.background=c;rc.style.boxShadow='0 0 40px '+c+'88'},arm=()=>{st=0;t=rn(1.2,3.2);paint('#e0364a')};arm();
+rc.onclick=()=>{if(st!=1)return S.lose("It wasn’t green. Eager, aren’t we?");tone(1000,.1,'triangle',.12);r++;$('#rs').textContent=r+' / '+n;if(r>=n)S.win();else arm()};
+S.upd=dt=>{t-=dt;if(t<=0){if(st==0){if(Math.random()<.35){st=2;t=.7;paint('#ffb020');say("GO! …No, wait. That was yellow.")}else{st=1;t=(S.twist?.8:1.1)*S.ez;paint('#2ecc71');tone(880,.1,'square',.1)}}else if(st==2)arm();else S.lose("Too slow. Green doesn’t wait for anyone.")}}};
+SG.quiz=S=>{const CL={RED:'#e0364a',BLUE:'#3a76e8',GREEN:'#1fa95b',YELLOW:'#d9a40a'},T=t=>({t}),mm=()=>{const n=shuf(Object.keys(CL));return shuf(n.map((t,i)=>i==0?{t,c:t}:{t,c:n[i%3+1]}))};
+const V=[{i:'Do not press any button containing the letters NO',q:'Which one means “one more”?',o:['Personal','Another','None','Ignore'].map(T),ok:b=>!/no/i.test(b.t)},
+{i:'Do not press any button containing the letter E',q:'What color is the sky?',o:['Blue','Cyan','Grey','Green'].map(T),ok:b=>!/e/i.test(b.t)},
+{i:'Do NOT press the correct answer',q:'What is 2 + 2 ?',o:['3','4','5','22'].map(T),ok:b=>b.t!='4'},
+{i:'Press the button whose text matches its color',o:mm,ok:b=>b.t==b.c},{i:'Press any button whose text does NOT match its color',o:mm,ok:b=>b.t!=b.c},
+{i:'Press the LAST button',o:['LAST','Press me','Me!','Not me'].map(T),fix:1,ok:(b,k)=>k==3},
+{i:'Press the biggest number',o:[{t:'7',fs:44},{t:'1000',fs:12},{t:'70',fs:20},{t:'8',fs:32}],ok:b=>b.t=='1000'},
+{i:'Are you ready? Do not answer YES or NO.',o:['YES','NO','MAYBE','Not telling'].map(T),ok:b=>!/^(yes|no)$/i.test(b.t)},
+{i:'Press the SMALLEST button',o:[{t:'Small',w:150,h:56},{t:'Smaller',w:110,h:44},{t:'BIG',w:200,h:76},{t:'.',w:36,h:26}],ok:b=>b.t=='.'}];
+const Q=shuf(V).slice(0,S.twist?5:3),lim=(S.twist?5.5:7.5)*S.ez;let r=0,t=0,jk=0;S.t(()=>say("Quick, simple round. Read the instruction first. Or don’t."),400);
+function ask(){if(r>=Q.length)return S.win();const v=Q[r];let o=typeof v.o=='function'?v.o():v.o.slice();if(!v.fix)o=shuf(o);t=lim;
+ui.innerHTML=`<div class="sub">ROUND ${r+1} / ${Q.length}</div><div class="big" style="font-size:clamp(16px,3.4vw,28px)">${v.i}</div>${v.q?`<div class="sub" style="font-size:clamp(15px,2.8vw,22px);color:var(--tx)">${v.q}</div>`:''}<div class="gb">${o.map((b,k)=>`<button class="btn" data-k="${k}" style="background:${b.c?CL[b.c]:'#2a3348'};color:#fff;${b.fs?'font-size:'+b.fs+'px;':''}${b.w?'width:'+b.w+'px;height:'+b.h+'px;':''}">${b.t}</button>`).join('')}</div><div class="bar"><i id="tb"></i></div>`;
+ui.querySelectorAll('.gb .btn').forEach(e=>e.onclick=()=>{const k=+e.dataset.k;if(v.ok(o[k],k)){if(!jk&&r>0&&Math.random()<.3){jk=1;sfx.fake();say("Correct! …Was that your final answer? Interesting. Again.");return ask()}sfx.click();tone(780,.1,'triangle',.1);r++;ask()}else S.lose(pick(["That button was forbidden. You did read the instruction. Right?","Nope. The instruction was right there.","Following instructions: a skill you may acquire.","Correct answer, wrong behavior. Classic."]))})}
+S.upd=dt=>{t-=dt;const b=$('#tb');if(b)b.style.width=Math.max(0,t/lim*100)+'%';if(t<=0)S.lose("Too slow. Reading is hard, I know.")};ask()};
+SG.dodge=S=>{const n=S.twist?4:3,lim=(S.twist?9:11)*S.ez;let c=0,t=lim;ui.innerHTML=`<div class="big">CLICK THE BUTTON ${n} TIMES</div><div class="sub" id="dc">0 / ${n}</div><div class="bar"><i id="tb"></i></div>`;
+const b=document.createElement('button');b.className='btn';b.textContent='CLICK ME';b.style.cssText='position:absolute;left:40%;top:62%';ui.appendChild(b);const hop=()=>{b.style.left=rn(8,72)+'%';b.style.top=rn(40,80)+'%'};
+b.onmouseenter=()=>{if(Math.random()<.75){hop();sfx.soft()}};b.onclick=()=>{c++;sfx.click();$('#dc').textContent=c+' / '+n;if(c>=n)S.win();else hop()};
+S.t(()=>say("It’s shy. Very shy. Chase it."),800);S.upd=dt=>{t-=dt;$('#tb').style.width=Math.max(0,t/lim*100)+'%';if(t<=0)S.lose("Too slow. It outran you. It’s a button.")}};
+/* ---------- pause ---------- */
+function setPlay(b){playing=b;$('#pbtn').classList.toggle('on',b)}
+function pause(){if(paused||!playing||!cur)return;paused=true;for(const k in keys)delete keys[k];try{AC&&AC.suspend()}catch(e){}stage.classList.add('ps');$('#pz').classList.add('on')}
+function resume(){if(!paused)return;paused=false;lastSay=performance.now();try{AC&&AC.resume()}catch(e){}stage.classList.remove('ps');$('#pz').classList.remove('on')}
+function toMenu(){TQ.length=0;if(cur)cur.end();cur=null;paused=false;stage.classList.remove('ps','dim');$('#pz').classList.remove('on');ui.innerHTML='';ov.innerHTML='';ov.className='';$('#ctl').classList.remove('on');$('#tag').textContent='';silent=false;try{AC&&AC.resume()}catch(e){}setMood(.1);stage.style.setProperty('--ac','#3dd6f5');title()}
+/* ---------- loop ---------- */
+function bg(c,t){c.fillStyle='#0e1118';c.fillRect(0,0,800,450);c.strokeStyle='rgba(120,140,180,.07)';c.lineWidth=1;const o=(t*10)%40;for(let x=-o;x<800;x+=40){c.beginPath();c.moveTo(x,0);c.lineTo(x,450);c.stroke()}for(let y=0;y<450;y+=40){c.beginPath();c.moveTo(0,y);c.lineTo(800,y);c.stroke()}}
+let lt=performance.now(),bt=0;(function loop(n){const dt=paused?0:Math.min(.033,(n-lt)/1000);lt=n;bt+=dt;if(!paused){tickQ(dt);if(cur&&!cur.dead&&cur.upd)cur.upd(dt)}X.clearRect(0,0,800,450);if(cur&&cur.draw)cur.draw(X,dt);else bg(X,bt);
+for(let i=PT.length-1;i>=0;i--){const q=PT[i];q.l-=dt;if(q.l<=0){PT.splice(i,1);continue}q.vy+=500*dt;q.x+=q.vx*dt;q.y+=q.vy*dt;X.globalAlpha=Math.max(0,q.l/q.m);X.fillStyle=q.c;X.fillRect(q.x,q.y,4,4)}X.globalAlpha=1;
+if(!paused&&cur&&!cur.dead&&n-lastSay>11000)say(pick(L.idle));requestAnimationFrame(loop)})(lt);
+$('#pbtn').onclick=e=>{e.target.blur();ai();sfx.click();pause()};$('#pr').onclick=()=>{sfx.click();resume()};
+$('#prs').onclick=()=>{sfx.click();TQ.length=0;resume();runSeg(idx,pos)};$('#pm').onclick=()=>{sfx.click();toMenu()};
+document.addEventListener('visibilitychange',()=>{if(document.hidden)pause()});addEventListener('pagehide',pause);
+title();
+</script></body></html>
